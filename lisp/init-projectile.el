@@ -27,9 +27,9 @@
 
   (define-minor-mode consult-projectile-mode
     "Projectile-like navigation with Consult"
-    t
-    " P"
-    consult-projectile-mode-map)
+    :init-value t
+    :lighter " P"
+    :keymap consult-projectile-mode-map)
 
   (add-hook 'emacs-startup-hook 'consult-projectile-mode))
 

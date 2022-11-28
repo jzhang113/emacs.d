@@ -6,10 +6,12 @@
 ;;; Code:
 
 (when (maybe-require-package 'perspective)
+  (require 'perspective)
   (customize-set-variable 'persp-mode-prefix-key (kbd "C-z"))
 
   ;; Ibuffer integration
-  (bind-key (kbd "C-x C-b") 'persp-ibuffer)
+  (require 'ibuffer)
+  (bind-key (kbd "C-x C-b") 'persp-ibuffer 'persp-mode-map)
   (add-hook 'ibuffer-hook
             (lambda ()
               (persp-ibuffer-set-filter-groups)
@@ -17,10 +19,9 @@
                 (ibuffer-do-sort-by-alphabetic))))
 
   ;; Consult integration
-  (with-eval-after-load 'perspective
-    (require 'consult)
-    (consult-customize consult--source-buffer :hidden t :default nil)
-    (add-to-list 'consult-buffer-sources persp-consult-source))
+  (require 'consult)
+  (consult-customize consult--source-buffer :hidden t :default nil)
+  (add-to-list 'consult-buffer-sources persp-consult-source)
 
   (persp-mode))
 

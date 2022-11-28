@@ -7,6 +7,9 @@
   (add-hook 'after-init-hook 'vertico-mode)
 
   (when (maybe-require-package 'embark)
+    (global-set-key (kbd "C-.") 'embark-act)
+    (global-set-key (kbd "M-.") 'embark-dwim)
+
     (with-eval-after-load 'vertico
       (define-key vertico-map (kbd "C-c C-o") 'embark-export)
       (define-key vertico-map (kbd "C-c C-c") 'embark-act)))

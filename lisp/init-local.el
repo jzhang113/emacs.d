@@ -6,8 +6,9 @@
 ;; Additional packages
 (require 'init-persp)
 (require 'init-god)
+(require 'init-webkit)
 
-;; disable transient-mark mode
+;; Disable transient-mark mode
 (transient-mark-mode -1)
 
 ;; Key rebindings
