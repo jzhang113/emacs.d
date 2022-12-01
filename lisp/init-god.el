@@ -32,14 +32,14 @@
 (defun jhz/god-mode-update-mode-line ()
   "Set the color of the modeline depending on if we are in God-mode, Incarnate-mode, or neither."
   (cond
-   (god-local-mode
+   ((bound-and-true-p god-local-mode)
     (set-face-attribute 'mode-line nil
                         :foreground jhz/prev-modeline-fg
                         :background "#a8680d")
     (set-face-attribute 'mode-line-inactive nil
                         :foreground jhz/prev-modeline-fgi
                         :background "#52110c"))
-   (incarnate-mode
+   ((bound-and-true-p incarnate-mode)
     (set-face-attribute 'mode-line nil
                         :foreground jhz/prev-modeline-fg
                         :background "#0000ff")
@@ -76,7 +76,8 @@
 (define-minor-mode incarnate-mode
   "As normal but toggle God mode on RET."
   :lighter " God-Inc"
-  :keymap `((,(kbd "<return>") . unincarnate)))
+  :keymap `((,(kbd "<return>") . unincarnate)
+            (,(kbd "RET") . unincarnate)))
 
 (provide 'init-god)
 ;;; init-god.el ends here
