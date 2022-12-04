@@ -7,12 +7,14 @@
 (require 'init-persp)
 (require 'init-god)
 (require 'init-webkit)
+(require 'init-puni)
 
 ;; Disable transient-mark mode
 (transient-mark-mode -1)
 
 ;; Key rebindings
 (defun jhz/kill-region-or-backward-word ()
+  "Kill region if there is one active, backward-kill word otherwise."
   (interactive)
   (if (region-active-p)
       (kill-region (region-beginning) (region-end))
