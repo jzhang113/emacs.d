@@ -23,36 +23,56 @@
           ("<escape>" . god-mode-isearch-activate)
           :map god-mode-isearch-map
           ("<escape>" . god-mode-isearch-disable))
-  :init (jhz/store-prev-faces)
+  :init
+  (jhz/store-prev-faces)
+  (setq god-mode-enable-function-key-translation nil)
+  (god-mode-all)
   :hook (post-command . jhz/god-mode-update-mode-line)
   :config
   (require 'god-mode-isearch)
-  (god-mode))
+
+  ;; Overwrite the lookup method to recursively check for keybinds
+  ;; For example, typing 'h b' with first check C-h C-b, followed by C-h b
+  ;; https://www.reddit.com/r/emacs/comments/dnrpp3/comment/f5gq047/
+  (defun god-mode-lookup-command (key-string)
+    "Execute extended keymaps such as C-c, or if it is a command, call it."
+    (let* ((key-vector (read-kbd-macro key-string t))
+           (binding (key-binding key-vector)))
+      (cond ((commandp binding)
+             (setq last-command-event (aref key-vector (- (length key-vector) 1)))
+             binding)
+            ((keymapp binding)
+             (god-mode-lookup-key-sequence nil key-string))
+            (:else
+             (let* ((key-string-list (s-split " " key-string))
+                    (key-last (nth 0 (last key-string-list))))
+               (if (string-match "^C\\-" key-last)
+                   (god-mode-lookup-command (s-join " " (append (nbutlast key-string-list) (list (substring key-last 2)))))
+                 (error "God: Unknown key binding for `%s`" key-string))))))))
 
 (defun jhz/god-mode-update-mode-line ()
   "Set the color of the modeline depending on if we are in God-mode, Incarnate-mode, or neither."
-  (cond
-   ((bound-and-true-p god-local-mode)
-    (set-face-attribute 'mode-line nil
-                        :foreground jhz/prev-modeline-fg
-                        :background "#a8680d")
-    (set-face-attribute 'mode-line-inactive nil
-                        :foreground jhz/prev-modeline-fgi
-                        :background "#52110c"))
-   ((bound-and-true-p incarnate-mode)
-    (set-face-attribute 'mode-line nil
-                        :foreground jhz/prev-modeline-fg
-                        :background "#0000ff")
-    (set-face-attribute 'mode-line-inactive nil
-                        :foreground jhz/prev-modeline-fgi
-                        :background "#00ffff"))
-   (t
-    (set-face-attribute 'mode-line nil
-                        :foreground jhz/prev-modeline-fg
-                        :background jhz/prev-modeline-bg)
-    (set-face-attribute 'mode-line-inactive nil
-                        :foreground jhz/prev-modeline-fgi
-                        :background jhz/prev-modeline-bgi))))
+  (cond ((bound-and-true-p god-local-mode)
+         (set-face-attribute 'mode-line nil
+                             :foreground jhz/prev-modeline-fg
+                             :background "#a8680d")
+         (set-face-attribute 'mode-line-inactive nil
+                             :foreground jhz/prev-modeline-fgi
+                             :background "#52110c"))
+        ((bound-and-true-p incarnate-mode)
+         (set-face-attribute 'mode-line nil
+                             :foreground jhz/prev-modeline-fg
+                             :background "#0000ff")
+         (set-face-attribute 'mode-line-inactive nil
+                             :foreground jhz/prev-modeline-fgi
+                             :background "#00ffff"))
+        (t
+         (set-face-attribute 'mode-line nil
+                             :foreground jhz/prev-modeline-fg
+                             :background jhz/prev-modeline-bg)
+         (set-face-attribute 'mode-line-inactive nil
+                             :foreground jhz/prev-modeline-fgi
+                             :background jhz/prev-modeline-bgi))))
 
 (defun unincarnate ()
   "Return to God."
