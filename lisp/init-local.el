@@ -8,6 +8,7 @@
 (require 'init-god)
 (require 'init-webkit)
 (require 'init-puni)
+(require 'init-vterm)
 
 ;; Disable transient-mark mode
 (transient-mark-mode -1)
@@ -65,6 +66,10 @@
   (bind-key* "C-<right>" 'sebwindmove-right)
   (bind-key* "C-<up>" 'sebwindmove-up)
   (bind-key* "C-<down>" 'sebwindmove-down))
+
+(elpaca-use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
 
 (provide 'init-local)
 ;;; init-local.el ends here
