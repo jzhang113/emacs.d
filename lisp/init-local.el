@@ -10,9 +10,6 @@
 (require 'init-puni)
 (require 'init-vterm)
 
-;; Disable transient-mark mode
-(transient-mark-mode -1)
-
 ;; Key rebindings
 (defun jhz/kill-region-or-backward-word ()
   "Kill region if there is one active, backward-kill word otherwise."
@@ -27,10 +24,10 @@
   (bind-key (kbd "C-w") 'jhz/kill-region-or-backward-word)
 
   ;; Faster movement
-  (bind-key (kbd "C-S-B") 'backward-to-word)
+  (bind-key (kbd "C-M-b") 'backward-to-word)
   (bind-key (kbd "C-b") 'backward-word)
-  (bind-key (kbd "C-S-F") 'forward-word)
-  (bind-key (kbd "C-f") 'forward-to-word)
+  (bind-key (kbd "C-M-f") 'forward-to-word)
+  (bind-key (kbd "C-f") 'forward-word)
   (bind-key (kbd "M-b") 'backward-sexp)
   (bind-key (kbd "M-f") 'forward-sexp))
 
@@ -70,6 +67,18 @@
 (elpaca-use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1))
+
+(elpaca-use-package all-the-icons
+  :if (display-graphic-p))
+
+(require 'battery)
+(display-battery-mode 1)
+
+;;; Mac specific settings
+(if *is-a-mac*
+    (progn
+      (setq mac-command-modifier 'super)
+      (setq mac-option-modifier 'meta)))
 
 (provide 'init-local)
 ;;; init-local.el ends here

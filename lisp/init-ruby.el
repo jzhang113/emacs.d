@@ -22,6 +22,10 @@
 
 (require-package 'rspec-mode)
 
+;; Ruby version manager
+(elpaca-use-package rvm
+  :config (rvm-use-default))
+
 
 (define-derived-mode brewfile-mode ruby-mode "Brewfile"
   "A major mode for Brewfiles, used by homebrew-bundle on MacOS.")
