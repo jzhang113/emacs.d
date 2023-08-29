@@ -3,7 +3,7 @@
 ;;; Code:
 
 (when (maybe-require-package 'projectile)
-  ;; (add-hook 'after-init-hook 'projectile-mode)
+  (add-hook 'after-init-hook 'projectile-mode)
 
   ;; Shorter modeline
   (setq-default projectile-mode-line-prefix " Proj")
@@ -11,28 +11,20 @@
   (when (executable-find "rg")
     (setq-default projectile-generic-command "rg --files --hidden -0"))
 
-  ;; (with-eval-after-load 'projectile
-  ;;   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+  (with-eval-after-load 'projectile
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
   (maybe-require-package 'ibuffer-projectile))
 
+(elpaca-use-package consult-projectile
+  :after projectile
+  :bind (:map projectile-command-map
+              ("f" . consult-projectile)))
 
-(when (maybe-require-package 'consult-projectile)
-  (defvar consult-projectile-mode-map nil "Keymap for projectile-esque commands")
-
-  (progn
-    (setq consult-projectile-mode-map (make-sparse-keymap))
-    (define-key consult-projectile-mode-map (kbd "C-c p f") 'consult-projectile)
-    (define-key consult-projectile-mode-map (kbd "C-c p s") 'consult-ag))
-
-  (define-minor-mode consult-projectile-mode
-    "Projectile-like navigation with Consult"
-    :init-value t
-    :lighter " P"
-    :keymap consult-projectile-mode-map)
-
-  (add-hook 'emacs-startup-hook 'consult-projectile-mode))
-
+(elpaca-use-package consult-ag
+  :after projectile
+  :bind (:map projectile-command-map
+              ("s a" . consult-ag)))
 
 (provide 'init-projectile)
 ;;; init-projectile.el ends here

@@ -12,23 +12,21 @@
   (defvar jhz/prev-modeline-fgi (face-attribute 'mode-line-inactive :foreground))
   (defvar jhz/prev-modeline-bgi (face-attribute 'mode-line-inactive :background)))
 
-(when (maybe-require-package 'god-mode)
-  (bind-key* "M-[ 3 2 ~" 'god-local-mode)
-  (bind-key* "<f18>" 'god-local-mode)
-
-  (jhz/store-prev-faces)
-  (add-hook 'post-command-hook 'jhz/god-mode-update-mode-line)
-
-  (require 'god-mode)
-  ;; god-mode rebindings
-  ;; leave this buffer via 'q'uit
-  (define-key god-local-mode-map (kbd "q") 'bury-buffer)
-
-  ;; temporarily leave god-mode via 'i'nsert
-  (define-key god-local-mode-map (kbd "i") 'incarnate)
-
+(elpaca-use-package god-mode
+  :bind  (("M-[ 3 2 ~" . god-local-mode)
+          ("<f18>" . god-local-mode)
+          :map god-local-mode-map
+          ("q" . bury-buffer)        ;; leave this buffer via 'q'uit
+          ("Q" . kill-this-buffer)   ;; the other 'Q'uit
+          ("i" . incarnate)          ;; temporarily leave god-mode via 'i'nsert
+          :map isearch-mode-map
+          ("<escape>" . god-mode-isearch-activate)
+          :map god-mode-isearch-map
+          ("<escape>" . god-mode-isearch-disable))
+  :init (jhz/store-prev-faces)
+  :hook (post-command . jhz/god-mode-update-mode-line)
+  :config
   (require 'god-mode-isearch)
-
   (god-mode))
 
 (defun jhz/god-mode-update-mode-line ()
@@ -76,9 +74,9 @@
       (setq cursor-type 'hbar))))
 
 (define-minor-mode incarnate-mode
-  "As normal but toggle to God mode on RET."
+  "As normal but toggle God mode on RET."
   :lighter " God-Inc"
-  :keymap '(("\r" . unincarnate)))
+  :keymap `((,(kbd "<return>") . unincarnate)))
 
 (provide 'init-god)
 ;;; init-god.el ends here

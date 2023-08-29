@@ -5,13 +5,14 @@
 
 ;;; Code:
 
-(when (maybe-require-package 'perspective)
-  (require 'perspective)
-  (customize-set-variable 'persp-mode-prefix-key (kbd "C-z"))
-
+(elpaca-use-package perspective
+  :bind (:map persp-mode-map
+              ("C-x C-b" . persp-ibuffer))
+  :custom
+  (persp-mode-prefix-key (kbd "C-z"))
+  :config
   ;; Ibuffer integration
   (require 'ibuffer)
-  (bind-key (kbd "C-x C-b") 'persp-ibuffer 'persp-mode-map)
   (add-hook 'ibuffer-hook
             (lambda ()
               (persp-ibuffer-set-filter-groups)

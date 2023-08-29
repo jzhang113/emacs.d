@@ -18,17 +18,18 @@
       (kill-region (region-beginning) (region-end))
     (backward-kill-word 1)))
 
-(bind-key (kbd "C-x k") 'kill-this-buffer)
-(bind-key (kbd "C-x K") 'kill-buffer)
-(bind-key (kbd "C-w") 'jhz/kill-region-or-backward-word)
+(elpaca nil
+  (bind-key (kbd "C-x k") 'kill-this-buffer)
+  (bind-key (kbd "C-x K") 'kill-buffer)
+  (bind-key (kbd "C-w") 'jhz/kill-region-or-backward-word)
 
-;; Faster movement
-(bind-key (kbd "C-S-B") 'backward-to-word)
-(bind-key (kbd "C-b") 'backward-word)
-(bind-key (kbd "C-S-F") 'forward-word)
-(bind-key (kbd "C-f") 'forward-to-word)
-(bind-key (kbd "M-b") 'backward-sexp)
-(bind-key (kbd "M-f") 'forward-sexp)
+  ;; Faster movement
+  (bind-key (kbd "C-S-B") 'backward-to-word)
+  (bind-key (kbd "C-b") 'backward-word)
+  (bind-key (kbd "C-S-F") 'forward-word)
+  (bind-key (kbd "C-f") 'forward-to-word)
+  (bind-key (kbd "M-b") 'backward-sexp)
+  (bind-key (kbd "M-f") 'forward-sexp))
 
 ;; Extend windmove across tmux panes
 ;; See: https://gist.github.com/sebmaynard/7689568
@@ -57,10 +58,11 @@
   (interactive)
   (sebwindmove 'windmove-right "-R"))
 
-(bind-key* "C-<left>" 'sebwindmove-left)
-(bind-key* "C-<right>" 'sebwindmove-right)
-(bind-key* "C-<up>" 'sebwindmove-up)
-(bind-key* "C-<down>" 'sebwindmove-down)
+(elpaca nil
+  (bind-key* "C-<left>" 'sebwindmove-left)
+  (bind-key* "C-<right>" 'sebwindmove-right)
+  (bind-key* "C-<up>" 'sebwindmove-up)
+  (bind-key* "C-<down>" 'sebwindmove-down))
 
 (provide 'init-local)
 ;;; init-local.el ends here

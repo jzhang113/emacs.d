@@ -6,34 +6,56 @@
 ;; TODO Default sort order should place [a-z] before punctuation
 
 (setq tab-always-indent 'complete)
-(when (maybe-require-package 'orderless)
-  (with-eval-after-load 'vertico
-    (require 'orderless)
-    (setq completion-styles '(orderless basic))))
-(setq completion-category-defaults nil
-      completion-category-overrides nil)
-(setq completion-cycle-threshold 4)
+(global-reveal-mode)
 
-(when (maybe-require-package 'corfu)
-  (setq-default corfu-auto t)
-  (with-eval-after-load 'eshell
-    (add-hook 'eshell-mode-hook (lambda () (setq-local corfu-auto nil))))
-  (setq-default corfu-quit-no-match 'separator)
-  (add-hook 'after-init-hook 'global-corfu-mode)
+(elpaca-use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles basic partial-completion))))
+  ;; (completion-cycle-threshold 4)
+  :config
+  ;; Behave like prefix completion for single short strings
+  (defun orderless-fast-dispatch (word index total)
+    (and (= index 0) (= total 1)  (length< word 4)
+	 `(orderless-regexp . ,(concat "^" (regexp-quote word)))))
 
+  (orderless-define-completion-style orderless-fast
+    (orderless-style-dispatchers '(orderless-fast-dispatch))
+    (orderless-matching-styles '(orderless-literal orderless-regexp))))
 
-
-  (with-eval-after-load 'corfu
+(elpaca-use-package corfu
+  :after orderless
+  :custom
+  (corfu-auto t)
+  (corfu-quit-no-match 'separator)
+  ;; aggressive orderless autocompletion
+  (corfu-auto-delay 0.1)
+  (corfu-auto-prefix 1)
+  (completion-styles '(orderless-fast))
+  :bind (:map corfu-map
+              ("\\" . corfu-insert-separator))
+  :hook ((eshell-mode . (lambda () (setq-local corfu-auto nil))))
+  :init  (global-corfu-mode)
+  :config
+  (xcond
+   ((display-graphic-p)
     (corfu-popupinfo-mode))
+   (t
+    ((corfu-echo-mode)
+     (setq corfu-echo-delay t)))))
 
-  ;; Make Corfu also work in terminals, without disturbing usual behaviour in GUI
-  (when (maybe-require-package 'corfu-terminal)
-    (with-eval-after-load 'corfu
-      (corfu-terminal-mode)))
+(elpaca-use-package (corfu-terminal :host "codeberg.org" :repo "akib/emacs-corfu-terminal")
+  :unless (display-graphic-p)
+  :after corfu
+  :config (corfu-terminal-mode))
 
-  ;; TODO: https://github.com/jdtsmith/kind-icon
-  )
-
+(elpaca-use-package kind-icon
+  :after corfu
+  :custom (kind-icon-default-face 'corfu-default)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (provide 'init-corfu)
 ;;; init-corfu.el ends here
