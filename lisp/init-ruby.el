@@ -23,7 +23,7 @@
 (require-package 'rspec-mode)
 
 ;; Ruby version manager
-(elpaca-use-package rvm
+(use-package rvm
   :config (rvm-use-default))
 
 

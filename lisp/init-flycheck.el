@@ -2,12 +2,13 @@
 ;;; Commentary:
 ;;; Code:
 
-(elpaca-use-package flycheck
+(use-package flycheck
   :init (global-flycheck-mode)
   :config
-  (setq flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list))
+  (setq flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
+  (setq flycheck-indication-mode 'left-margin))
 
-(elpaca-use-package flycheck-color-mode-line
+(use-package flycheck-color-mode-line
   :after flycheck
   :hook (flycheck-mode . flycheck-color-mode-line-mode))
 

@@ -3,18 +3,20 @@
 
 ;;; Code:
 
-(elpaca-use-package (puni :host github :repo "AmaiKinono/puni")
-  :hook ((term-mode calc-mode dired-mode ibuffer-mode vterm-mode) . puni-disable-puni-mode)
+(use-package puni
+  :elpaca (:host github :repo "AmaiKinono/puni")
+  :hook ((term-mode calc-mode dired-mode ibuffer-mode vterm-mode html-mode) . puni-disable-puni-mode)
   :bind (:map puni-mode-map
               ("C-w" . puni-kill-region-or-backward-word)
               ("M-f" . puni-forward-sexp-or-syntactic-forward)
               ("M-b" . puni-backward-sexp-or-syntactic-backward)
+              ("C-+" . puni-expand-region)
               ;; slurping & barfing
               ("C-S-o" . puni-slurp-backward)
               ("C-S-p" . puni-barf-backward)
               ("C-{" . puni-barf-forward)
               ("C-}" . puni-slurp-forward)
-              ;; depth chaning
+              ;; depth chaining
               ("C-(" . puni-wrap-round)
               ("C-)" . puni-splice)
               ("M-r" . puni-raise)

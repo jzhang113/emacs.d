@@ -3,7 +3,7 @@
 
 ;;; Code:
 
-(elpaca-use-package vterm)
+(use-package vterm)
 
 (provide 'init-vterm)
 ;;; init-vterm.el ends here

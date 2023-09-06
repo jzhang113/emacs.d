@@ -16,12 +16,12 @@
 
   (maybe-require-package 'ibuffer-projectile))
 
-(elpaca-use-package consult-projectile
+(use-package consult-projectile
   :after projectile
   :bind (:map projectile-command-map
               ("f" . consult-projectile)))
 
-(elpaca-use-package consult-ag
+(use-package consult-ag
   :after projectile
   :bind (:map projectile-command-map
               ("s a" . consult-ag)))

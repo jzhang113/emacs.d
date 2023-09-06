@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(elpaca-use-package perspective
+(use-package perspective
   :bind (:map persp-mode-map
               ("C-x C-b" . persp-ibuffer))
   :custom

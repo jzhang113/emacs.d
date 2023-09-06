@@ -12,9 +12,9 @@
   (defvar jhz/prev-modeline-fgi (face-attribute 'mode-line-inactive :foreground))
   (defvar jhz/prev-modeline-bgi (face-attribute 'mode-line-inactive :background)))
 
-(elpaca-use-package god-mode
-  :bind  (("M-[ 3 2 ~" . god-local-mode)
-          ("<f18>" . god-local-mode)
+(use-package god-mode
+  :bind  (("M-[ 3 2 ~" . god-mode-all)
+          ("<f18>" . god-mode-all)
           ("C-x C-0" . delete-window) ;; Match the behavior of "x 1", "x 2", "x 3"
           :map god-local-mode-map
           ("q" . bury-buffer)         ;; leave this buffer via 'q'uit

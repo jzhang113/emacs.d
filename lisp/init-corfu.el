@@ -8,8 +8,7 @@
 (setq tab-always-indent 'complete)
 (global-reveal-mode)
 
-(elpaca-use-package orderless
-  :ensure t
+(use-package orderless
   :custom
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)
@@ -25,15 +24,16 @@
     (orderless-style-dispatchers '(orderless-fast-dispatch))
     (orderless-matching-styles '(orderless-literal orderless-regexp))))
 
-(elpaca-use-package (corfu :host github :repo "minad/corfu" :files (:defaults "extensions/*.el"))
+(use-package corfu
+  :elpaca (:host github :repo "minad/corfu" :files (:defaults "extensions/*.el"))
   :after orderless
   :custom
   (corfu-auto t)
   (corfu-quit-no-match t)
   ;; aggressive orderless autocompletion
-  (corfu-auto-delay 0.1)
-  (corfu-auto-prefix 1)
-  (completion-styles '(orderless-fast))
+  (corfu-auto-delay 0.5)
+  (corfu-auto-prefix 3)
+  ;; (completion-styles '(orderless-fast))
   :bind (:map corfu-map
               ("SPC" . corfu-insert-separator)
               ("C-j" . corfu-recomplete))
@@ -50,12 +50,12 @@
       (setq corfu-echo-delay t)
       (corfu-echo-mode)))))
 
-(elpaca-use-package (corfu-terminal :host "codeberg.org" :repo "akib/emacs-corfu-terminal")
+(use-package corfu-terminal
   :unless (display-graphic-p)
   :after corfu
   :config (corfu-terminal-mode))
 
-(elpaca-use-package kind-icon
+(use-package kind-icon
   :after corfu
   :custom (kind-icon-default-face 'corfu-default)
   :config

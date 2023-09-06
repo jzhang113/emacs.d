@@ -39,6 +39,12 @@
   (reapply-themes))
 
 
+(use-package ef-themes
+  :config
+  (setq ef-themes-to-toggle '(ef-cherie ef-bio))
+  (ef-themes-toggle))
+
+
 (when (maybe-require-package 'dimmer)
   (setq-default dimmer-fraction 0.15)
   (add-hook 'after-init-hook 'dimmer-mode)

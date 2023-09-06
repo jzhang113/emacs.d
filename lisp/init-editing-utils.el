@@ -147,8 +147,9 @@
 (with-eval-after-load 'help
   (define-key help-map "A" 'describe-face))
 
-(global-set-key (kbd "C-.") 'set-mark-command)
-(global-set-key (kbd "C-x C-.") 'pop-global-mark)
+;; already exist as C-SPACE and C-x C-SPACE
+;; (global-set-key (kbd "C-.") 'set-mark-command)
+;; (global-set-key (kbd "C-x C-.") 'pop-global-mark)
 
 (when (maybe-require-package 'avy)
   (global-set-key (kbd "C-;") 'avy-goto-char-timer))
@@ -157,12 +158,13 @@
 ;; multiple-cursors
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-+") 'mc/mark-next-like-this)
+;; keybind used for puni-expand
+;; (global-set-key (kbd "C-+") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 ;; Train myself to use M-f and M-b instead
-(global-unset-key [M-left])
-(global-unset-key [M-right])
+;; (global-unset-key [M-left])
+;; (global-unset-key [M-right])
 
 (defun kill-back-to-indentation ()
   "Kill from point back to the first non-whitespace character on the line."

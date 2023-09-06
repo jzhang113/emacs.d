@@ -3,7 +3,8 @@
 
 ;;; Code:
 
-(elpaca-use-package (webkit :host github :repo "akirakyle/emacs-webkit" :files (:defaults "*.js" "*.css" "*.so") :pre-build ("make"))
+(use-package webkit
+  :elpaca (:host github :repo "akirakyle/emacs-webkit" :files (:defaults "*.js" "*.css" "*.so") :pre-build ("make"))
   :unless *is-a-mac*
   :bind ("C-c C-v" . webkit)
   :init

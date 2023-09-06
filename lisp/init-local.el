@@ -64,12 +64,10 @@
   (bind-key* "C-<up>" 'sebwindmove-up)
   (bind-key* "C-<down>" 'sebwindmove-down))
 
-(elpaca-use-package doom-modeline
-  :ensure t
+(use-package doom-modeline
   :init (doom-modeline-mode 1))
 
-(elpaca-use-package all-the-icons
-  :if (display-graphic-p))
+(use-package nerd-icons)
 
 (require 'battery)
 (display-battery-mode 1)
