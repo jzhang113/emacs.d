@@ -5,7 +5,7 @@
 ;;; Basic ruby setup
 (require-package 'ruby-hash-syntax)
 
-(add-auto-mode 'ruby-mode
+(add-auto-mode 'ruby-base-mode
                "\\.rxml\\'"
                "\\.rjs\\'" "\\.irbrc\\'" "\\.pryrc\\'" "\\.builder\\'" "\\.ru\\'"
                "\\.gemspec\\'" "Kirkfile\\'")
@@ -15,10 +15,10 @@
  ruby-use-encoding-map nil
  ruby-insert-encoding-magic-comment nil)
 
-(add-hook 'ruby-mode-hook 'subword-mode)
+(add-hook 'ruby-base-mode-hook 'subword-mode)
 
 (with-eval-after-load 'page-break-lines
-  (add-to-list 'page-break-lines-modes 'ruby-mode))
+  (add-to-list 'page-break-lines-modes 'ruby-base-mode))
 
 (require-package 'rspec-mode)
 
@@ -34,8 +34,8 @@
 
 
 ;;; Inferior ruby
-(require-package 'inf-ruby)
-(with-eval-after-load 'inf-ruby
+(use-package inf-ruby
+  :config
   (defun sanityinc/ruby-load-file (&optional choose-file)
     (interactive "P")
     (if (or choose-file (not buffer-file-name))
@@ -44,12 +44,11 @@
       (ruby-load-file buffer-file-name)))
   (define-key inf-ruby-minor-mode-map [remap ruby-load-file] 'sanityinc/ruby-load-file))
 
-
 
 ;;; Ruby compilation
 (require-package 'ruby-compilation)
 
-(with-eval-after-load 'ruby-mode
+(with-eval-after-load 'ruby-base-mode
   (define-key ruby-mode-map [S-f7] 'ruby-compilation-this-buffer)
   (define-key ruby-mode-map [f7] 'ruby-compilation-this-test))
 
@@ -61,7 +60,7 @@
 ;;; Robe
 (when (maybe-require-package 'robe)
   (with-eval-after-load 'ruby-mode
-    (add-hook 'ruby-mode-hook 'robe-mode)))
+    (add-hook 'ruby-base-mode-hook 'robe-mode)))
 
 
 
@@ -75,7 +74,7 @@
 
 
 (when (maybe-require-package 'yard-mode)
-  (add-hook 'ruby-mode-hook 'yard-mode)
+  (add-hook 'ruby-base-mode-hook 'yard-mode)
   (with-eval-after-load 'yard-mode
     (diminish 'yard-mode)))
 
@@ -105,7 +104,7 @@
 (mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\(\\.erb\\)?\\'" 'erb)
 (sanityinc/set-up-mode-for-erb 'yaml-mode)
 
-(dolist (mode (list 'js-mode 'js2-mode 'js3-mode))
+(dolist (mode (list 'js-mode 'js2-mode 'js3-mode 'js-ts-mode))
   (mmm-add-mode-ext-class mode "\\.js\\.erb\\'" 'erb))
 
 
