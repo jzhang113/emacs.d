@@ -22,6 +22,9 @@
 
 (require-package 'rspec-mode)
 
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs '((ruby-base-mode) "ruby-lsp")))
+
 ;; Ruby version manager
 (use-package rvm
   :config (rvm-use-default))
@@ -80,33 +83,9 @@
 
 
 ;;; ERB
-(require-package 'mmm-mode)
-
-(require 'derived)
-
-(defun sanityinc/set-up-mode-for-erb (mode)
-  (add-hook (derived-mode-hook-name mode) (lambda () (require 'mmm-erb)))
-  (mmm-add-mode-ext-class mode "\\.erb\\'" 'erb))
-
-(dolist (mode '(html-mode html-erb-mode nxml-mode))
-  (sanityinc/set-up-mode-for-erb mode)
-  (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-js)
-  (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-css))
-
-(mapc 'sanityinc/set-up-mode-for-erb
-      '(coffee-mode js-mode js2-mode js3-mode markdown-mode textile-mode))
-
-(mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
-
-(add-auto-mode 'html-erb-mode "\\.rhtml\\'" "\\.html\\.erb\\'")
-(add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'"  . html-erb-mode))
-
-(mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\(\\.erb\\)?\\'" 'erb)
-(sanityinc/set-up-mode-for-erb 'yaml-mode)
-
-(dolist (mode (list 'js-mode 'js2-mode 'js3-mode 'js-ts-mode))
-  (mmm-add-mode-ext-class mode "\\.js\\.erb\\'" 'erb))
-
+(use-package web-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 
 
 ;; Ruby - my convention for heredocs containing SQL

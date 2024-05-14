@@ -18,6 +18,7 @@
 
 (setq-default js-indent-level 2)
 
+(add-hook 'js-base-mode-hook 'subword-mode)
 
 
 ;; js2-mode

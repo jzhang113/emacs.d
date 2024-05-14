@@ -25,7 +25,9 @@
               ("M-<down>" . puni-splice-killing-forward)
               ("ESC <down>" . puni-splice-killing-forward)
               ("M-s c" . puni-convolute)
-              ("M-s s" . puni-split))
+              ("M-s s" . puni-split)
+              ("M-s t" . puni-transpose)
+              ("M-s q" . puni-squeeze))
   :init
   (puni-global-mode))
 

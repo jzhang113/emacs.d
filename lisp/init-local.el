@@ -78,5 +78,12 @@
       (setq mac-command-modifier 'super)
       (setq mac-option-modifier 'meta)))
 
+(use-package format-all
+  :commands format-all-mode
+  :hook (prog-mode . format-all-mode)
+  :config
+  (setq-default format-all-formatters
+                '(("Ruby" (stree)))))
+
 (provide 'init-local)
 ;;; init-local.el ends here
