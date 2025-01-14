@@ -27,7 +27,7 @@
 
 ;; Ruby version manager
 (use-package rvm
-  :config (rvm-use-default))
+  :hook (ruby-base-mode . rvm-activate-corresponding-ruby))
 
 
 (define-derived-mode brewfile-mode ruby-mode "Brewfile"
