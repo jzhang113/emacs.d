@@ -12,7 +12,8 @@
     (setq-default projectile-generic-command "rg --files --hidden -0"))
 
   (with-eval-after-load 'projectile
-    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-c p s a") 'consult-ripgrep))
 
   (maybe-require-package 'ibuffer-projectile))
 
@@ -20,11 +21,6 @@
   :after projectile
   :bind (:map projectile-command-map
               ("f" . consult-projectile)))
-
-(use-package consult-ag
-  :after projectile
-  :bind (:map projectile-command-map
-              ("s a" . consult-ag)))
 
 (provide 'init-projectile)
 ;;; init-projectile.el ends here
