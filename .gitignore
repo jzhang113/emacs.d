@@ -58,3 +58,5 @@ site-lisp/package/
 /projects
 /webkit
 /elpaca
+/forge-*.sqlite
+/projectile.cache

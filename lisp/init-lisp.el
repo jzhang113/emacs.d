@@ -9,6 +9,8 @@
   (add-hook hook 'turn-on-elisp-slime-nav-mode))
 (add-hook 'emacs-lisp-mode-hook (lambda () (setq mode-name "ELisp")))
 
+(setq-default elisp-fontify-semantically t)
+
 (setq-default initial-scratch-message
               (concat ";; Happy hacking, " user-login-name " - Emacs ♥ you!\n\n"))
 
@@ -133,6 +135,18 @@ there is no current file, eval the current buffer."
   (add-hook 'after-init-hook 'auto-compile-on-load-mode))
 
 
+(defun sanityinc/trust-current-file ()
+  "Quickly mark current elisp file as trusted content."
+  (interactive)
+  (if-let* ((file (and (derived-mode-p 'emacs-lisp-mode)
+                       (buffer-file-name))))
+      (progn (push file trusted-content)
+             (when (bound-and-true-p flymake-mode)
+               (flymake-mode nil)
+               (flymake-mode)))
+    (user-error "Can't find or trust this buffer's file")))
+
+
 ;; Load .el if newer than corresponding .elc
 
 (setq load-prefer-newer t)
@@ -157,6 +171,10 @@ there is no current file, eval the current buffer."
        'shell-quote-argument
        (list "-Q" "-batch" "-f" "batch-byte-compile" filename)
        " ")))))
+
+
+(with-eval-after-load 'page-break-lines
+  (add-to-list 'page-break-lines-modes 'emacs-lisp-compilation-mode))
 
 
 
