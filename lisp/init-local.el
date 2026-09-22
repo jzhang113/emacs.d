@@ -10,27 +10,34 @@
 (require 'init-puni)
 (require 'init-vterm)
 
+
+;; Default C-w behavior to backward-kill-word when no region is selected
+(setq kill-region-dwim 'emacs-word)
+
+
 ;; Key rebindings
-(defun jhz/kill-region-or-backward-word ()
-  "Kill region if there is one active, backward-kill word otherwise."
+
+(defun jhz/current-branch-name ()
+  "Print the name of the current branch if it exists."
   (interactive)
-  (if (region-active-p)
-      (kill-region (region-beginning) (region-end))
-    (backward-kill-word 1)))
+  (let ((branch (magit-get-current-branch)))
+    (if branch
+        (save-excursion (insert branch))
+      (user-error "There is no current branch"))))
 
-(elpaca nil
-  (bind-key (kbd "C-x k") 'kill-this-buffer)
-  (bind-key (kbd "C-x K") 'kill-buffer)
-  (bind-key (kbd "C-w") 'jhz/kill-region-or-backward-word)
+(bind-key (kbd "C-x k") 'kill-current-buffer)
+(bind-key (kbd "C-x K") 'kill-buffer)
+(bind-key (kbd "C-x y") 'jhz/current-branch-name)
 
-  ;; Faster movement
-  (bind-key (kbd "C-M-b") 'backward-to-word)
-  (bind-key (kbd "C-b") 'backward-word)
-  (bind-key (kbd "C-M-f") 'forward-to-word)
-  (bind-key (kbd "C-f") 'forward-word)
-  (bind-key (kbd "M-b") 'backward-sexp)
-  (bind-key (kbd "M-f") 'forward-sexp))
+;; Faster movement
+(bind-key (kbd "C-M-b") 'backward-to-word)
+(bind-key (kbd "C-b") 'backward-word)
+(bind-key (kbd "C-M-f") 'forward-to-word)
+(bind-key (kbd "C-f") 'forward-word)
+(bind-key (kbd "M-b") 'backward-sexp)
+(bind-key (kbd "M-f") 'forward-sexp)
 
+
 ;; Extend windmove across tmux panes
 ;; See: https://gist.github.com/sebmaynard/7689568
 ;; (require 'windmove)
@@ -58,12 +65,12 @@
   (interactive)
   (sebwindmove 'windmove-right "-R"))
 
-(elpaca nil
-  (bind-key* "C-<left>" 'sebwindmove-left)
-  (bind-key* "C-<right>" 'sebwindmove-right)
-  (bind-key* "C-<up>" 'sebwindmove-up)
-  (bind-key* "C-<down>" 'sebwindmove-down))
+(bind-key* "C-<left>" 'sebwindmove-left)
+(bind-key* "C-<right>" 'sebwindmove-right)
+(bind-key* "C-<up>" 'sebwindmove-up)
+(bind-key* "C-<down>" 'sebwindmove-down)
 
+
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
 

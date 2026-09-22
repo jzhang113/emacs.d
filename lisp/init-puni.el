@@ -4,8 +4,8 @@
 ;;; Code:
 
 (use-package puni
-  :elpaca (:host github :repo "AmaiKinono/puni")
-  :hook ((term-mode calc-mode dired-mode ibuffer-mode vterm-mode html-mode) . puni-disable-puni-mode)
+  :ensure (:host github :repo "AmaiKinono/puni")
+  :hook ((term-mode calc-mode dired-mode minibuffer-mode ibuffer-mode vterm-mode html-mode) . puni-disable-puni-mode)
   :bind (:map puni-mode-map
               ("C-w" . puni-kill-region-or-backward-word)
               ("M-f" . puni-forward-sexp-or-syntactic-forward)
